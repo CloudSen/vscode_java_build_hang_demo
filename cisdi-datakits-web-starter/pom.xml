@@ -30,11 +30,6 @@
     </dependency>
     <!--  轻峰token工具  -->
     <dependency>
-      <groupId>cn.cisdigital.datakits</groupId>
-      <artifactId>cisdi-datakits-qbee-token-starter</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>

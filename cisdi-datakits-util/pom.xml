@@ -13,8 +13,6 @@
   <packaging>pom</packaging>
   <description>通用工具</description>
   <modules>
-    <module>cisdi-datakits-qbee-token-starter</module>
-    <module>cisdi-datakits-qbee-open-sdk-starter</module>
     <module>cisdi-datakits-sql-parser-starter</module>
     <module>cisdi-datakits-doris-api-starter</module>
     <module>cisdi-datakits-distributed-event-starter</module>

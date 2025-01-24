@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cisdigital.datakits.framework.util.qbeeopensdk.OpenPlatformAutoConfiguration
-

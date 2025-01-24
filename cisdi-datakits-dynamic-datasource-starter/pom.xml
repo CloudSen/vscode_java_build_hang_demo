@@ -91,11 +91,6 @@
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
     </dependency>
-    <!--接入Access数据库的 驱动 -->
-    <dependency>
-      <groupId>net.sf.ucanaccess</groupId>
-      <artifactId>ucanaccess</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.healthmarketscience.jackcess</groupId>
       <artifactId>jackcess-encrypt</artifactId>
@@ -109,11 +104,6 @@
     <dependency>
       <groupId>cn.com.kingbase</groupId>
       <artifactId>kingbase8</artifactId>
-    </dependency>
-    <!--sybase-->
-    <dependency>
-      <groupId>jdbc.sybase</groupId>
-      <artifactId>jconn4</artifactId>
     </dependency>
     <dependency>
       <groupId>com.zaxxer</groupId>
@@ -222,11 +212,6 @@
       <groupId>cn.cisdigital.datakits</groupId>
       <artifactId>cisdi-datakits-cloud-alibaba-starter</artifactId>
       <scope>provided</scope>
-    </dependency>
-    <!-- SAP 驱动 -->
-    <dependency>
-      <groupId>org.hibersap</groupId>
-      <artifactId>com.sap.conn.jco.sapjco3</artifactId>
     </dependency>
   </dependencies>
 

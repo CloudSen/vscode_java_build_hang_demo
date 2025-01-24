@@ -339,5 +339,5 @@ public class ParseDorisIndex implements ParseDorisIndexConstants {
   final public void disable_tracing() {
   }
 
-    //可以再里面定义初始化信息，字符串接收方式，异常处理..
+    //可以再里面定义初始化信息，字符串接收方式，异常处�?..
 }

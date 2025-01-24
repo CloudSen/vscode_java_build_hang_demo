@@ -64,16 +64,6 @@
       </dependency>
       <dependency>
         <groupId>cn.cisdigital.datakits</groupId>
-        <artifactId>cisdi-datakits-qbee-open-sdk-starter</artifactId>
-        <version>${framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>cn.cisdigital.datakits</groupId>
-        <artifactId>cisdi-datakits-qbee-token-starter</artifactId>
-        <version>${framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>cn.cisdigital.datakits</groupId>
         <artifactId>cisdi-datakits-mybatis-plus-starter</artifactId>
         <version>${framework.version}</version>
       </dependency>
@@ -323,16 +313,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <distributionManagement>
-    <repository>
-      <id>cisdi-cloud</id>
-      <url>http://nexus.cisdigital.cn/repository/maven-releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>cisdi-cloud</id>
-      <url>http://nexus.cisdigital.cn/repository/maven-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
 
 </project>

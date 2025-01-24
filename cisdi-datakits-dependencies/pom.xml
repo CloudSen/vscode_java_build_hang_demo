@@ -166,11 +166,6 @@
         <version>${kingbase8.driver.version}</version>
       </dependency>
       <dependency>
-        <groupId>net.sf.ucanaccess</groupId>
-        <artifactId>ucanaccess</artifactId>
-        <version>${ucanaccess.dirver.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.healthmarketscience.jackcess</groupId>
         <artifactId>jackcess-encrypt</artifactId>
         <version>${jackcess.encrypt.version}</version>
@@ -196,37 +191,12 @@
         <artifactId>rocketmq-spring-boot-starter</artifactId>
         <version>${rocketmq-starter-version}</version>
       </dependency>
-      <dependency>
-        <groupId>jdbc.sybase</groupId>
-        <artifactId>jconn4</artifactId>
-        <version>${sybase.driver.version}</version>
-      </dependency>
       <!-- test -->
       <dependency>
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>${wiremock.version}</version>
         <scope>test</scope>
-      </dependency>
-      <!-- 轻峰开放SDK -->
-      <dependency>
-        <groupId>im.qingtui.qbee.open</groupId>
-        <artifactId>qbee-op-all</artifactId>
-        <version>${qbee-open-sdk.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-ext</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-ext</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <!-- others -->
       <dependency>
@@ -444,25 +414,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- SAP 驱动管理 -->
-      <dependency>
-        <groupId>org.hibersap</groupId>
-        <artifactId>com.sap.conn.jco.sapjco3</artifactId>
-        <version>${sap.driver.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <distributionManagement>
-    <repository>
-      <id>cisdi-cloud</id>
-      <url>http://nexus.cisdigital.cn/repository/maven-releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>cisdi-cloud</id>
-      <url>http://nexus.cisdigital.cn/repository/maven-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-
 
 </project>

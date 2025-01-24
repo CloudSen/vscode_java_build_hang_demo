@@ -1,0 +1,50 @@
+
+spring:
+  application:
+    name: test-dynamic-datasource-application
+  profiles:
+    group:
+      dev-gourp: mysql,dev
+    active: dev-group
+  web:
+    locale: zh_CN
+  messages:
+    basename: i18n/framework
+    cache-duration: 10m
+    use-code-as-default-message: true
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      #server-addr: xxxx:8848
+      server-addr: localhost:8848
+      discovery:
+        enabled: true
+        # 本地启动时，请改为自己的namespace，避免污染其他环境
+        #        namespace: datakits-local
+        namespace: datakits
+      config:
+        enabled: true
+        file-extension: yaml
+        namespace: datakits
+        group: datakits
+        extension-configs:
+          - data-id: public-datakits-var.yaml
+            group: datakits
+            refresh: true
+          - data-id: public-datakits-config.yaml
+            group: datakits
+            refresh: true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /test-application
+  port: 8081
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info

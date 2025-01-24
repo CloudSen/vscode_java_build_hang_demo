@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.cisdigital.datakits.framework.mp.DefaultMybatisPlusAutoConfiguration, \
+  cn.cisdigital.datakits.framework.mp.MpTransactionAutoConfiguration
+

@@ -1,0 +1,23 @@
+# Minio starter核心配置
+datakits:
+  default-config:
+    storage:
+      minio:
+        # 以下为必填项
+        endpoint: http://xxxx:9000
+        access-key: datakits
+        secret-key: Cisdi@123456
+        bucket: integration-test
+        # 以下为可选项
+        ## 默认是us-east-1，政企环境可能需要改为REGION
+        region: us-east-1
+        ## 默认20秒，最低不小于10秒
+        connect-timeout: 20s
+        ## 默认2分钟，最低不小于10秒
+        write-timeout: 2m
+        ## 默认2分钟，最低不小于10秒
+        read-timeout: 2m
+        ## 默认10分钟，最低不小于1分钟
+        pre-signed-expire: 10m
+        ## 默认为： txt,log,sh,bat,conf,cfg,py,java,sql,xml,hql,properties,json,yml,yaml,ini,js
+        allow-view-suffix: 'txt,log,sh,bat,conf,cfg,py,java,sql,xml,hql,properties,json,yml,yaml,ini,js'

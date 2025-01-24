@@ -1,0 +1,44 @@
+
+spring:
+  application:
+    name: test-redisson-application
+  profiles:
+    group:
+      dev-gourp: mysql,dev
+    active: dev-group
+  web:
+    locale: zh_CN
+  messages:
+    basename: i18n/framework
+    cache-duration: 10m
+    use-code-as-default-message: true
+  redis:
+    redisson:
+      config: |
+        {"threads": ${app.redis.threads:1},
+        "nettyThreads": ${app.redis.netty-threads:3},
+        "singleServerConfig":{
+          "idleConnectionTimeout": ${app.redis.idle-connection-timeout:60000},
+          "connectTimeout": ${app.redis.connect-timeout:30000},
+          "timeout": "${app.redis.timeout:30000}",
+          "retryAttempts": 1,
+          "retryInterval": 1000,
+          "password": "xxx",
+          "subscriptionsPerConnection": 1,
+          "clientName": "${spring.application.name}-redisson",
+          "address": "redis://xxxx:6379",
+          "subscriptionConnectionMinimumIdleSize": ${app.redis.sub-connection-mini-idle-size:1},
+          "subscriptionConnectionPoolSize": ${app.redis.sub-connection-pool-size:5},
+          "connectionMinimumIdleSize": ${app.redis.connection-mini-idle-size:1},
+          "connectionPoolSize": ${app.redis.connection-pool-size:5},
+          "database": ${app.redis.database:0},
+          "dnsMonitoringInterval": 5000}
+        }
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /test-redisson-application
+  port: 8080

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: test-common-application
+  web:
+    locale: zh_CN
+  messages:
+    basename: i18n.framework
+    cache-duration: 10m

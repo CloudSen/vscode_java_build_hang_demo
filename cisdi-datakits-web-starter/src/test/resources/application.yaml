@@ -1,0 +1,37 @@
+
+spring:
+  application:
+    name: test-common-application
+  profiles:
+    group:
+      dev-gourp: mysql,dev
+    active: dev-group
+  web:
+    locale: zh_CN
+  messages:
+    basename: i18n/test_framework,i18n/framework
+    cache-duration: 10m
+    use-code-as-default-message: true
+  datasource:
+    url: jdbc:mysql://xxxx:3306/datakits?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: datakits
+    password: xxx
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /test-application
+  port: 8081
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+
+datakits:
+  default-config:
+    mp:
+      enable-optimistic-locker: true
+

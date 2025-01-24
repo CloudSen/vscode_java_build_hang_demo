@@ -1,0 +1,9 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.cisdigital.datakits.framework.web.WebAutoConfiguration,\
+  cn.cisdigital.datakits.framework.web.exception.ExceptionHandlerAutoConfiguration,\
+  cn.cisdigital.datakits.framework.web.mvc.MvcAutoConfiguration,\
+  cn.cisdigital.datakits.framework.web.mvc.filter.LogMdcFilter,\
+  cn.cisdigital.datakits.framework.web.mvc.filter.XssAndSqlFilter,\
+  cn.cisdigital.datakits.framework.web.threadpool.AsyncTaskThreadPoolAutoConfiguration, \
+  cn.cisdigital.datakits.framework.web.log.LogContextAutoConfiguration
+

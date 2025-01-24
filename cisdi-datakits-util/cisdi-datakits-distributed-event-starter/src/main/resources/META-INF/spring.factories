@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.cisdigital.datakits.framework.util.distributed.event.DistributedEventAutoConfiguration
+

@@ -1,0 +1,38 @@
+
+spring:
+  application:
+    name: test-event-application
+  profiles:
+    group:
+      dev-gourp: mysql,dev
+    active: dev-group
+  web:
+    locale: zh_CN
+  messages:
+    basename: i18n/framework
+    cache-duration: 10m
+    use-code-as-default-message: true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /test-application
+  port: 8081
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+
+datakits:
+  sdk:
+    distributed-event:
+      # 开启分布式消费
+      consumeEnable: true
+      # 开启分布式生产
+      producerEnable: true
+      kafka:
+        address: xxxx:9092
+        groupId: ${spring.application.name}_${spring.profiles.active}

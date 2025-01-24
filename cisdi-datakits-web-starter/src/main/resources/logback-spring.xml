@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+<!-- scan:当此属性设置为true时，配置文档如果发生改变，将会被重新加载，默认值为true -->
+<!-- scanPeriod:设置监测配置文档是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<configuration scan="true" scanPeriod="60 seconds">
+  <!-- spring变量 -->
+  <springProperty scop="context" name="APP_NAME"
+    source="spring.application.name"/>
+  <springProperty scop="context" name="LOG_FILE_PATH"
+    source="public.logging.path" defaultValue="/var/log"/>
+  <springProperty scop="context" name="MAX_FILE_SIZE"
+    source="public.logging.max-file-size" defaultValue="100MB"/>
+  <springProperty scop="context" name="MAX_SAVE_DAYS"
+    source="public.logging.max-save-days" defaultValue="15"/>
+  <!--引入默认的一些设置-->
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义后，可以使“${}”来使用变量。 -->
+  <property name="LOG_PATTERN"
+    value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%X{request-id}] [%t] [%logger{10}] %m%n"/>
+
+  <!--1. 输出到控制台-->
+  <springProfile name="dev-group | qa-group | pre-group | prod-group">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+        <pattern>${LOG_PATTERN}</pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+    </appender>
+  </springProfile>
+
+  <!--2. 输出到文档-->
+  <!-- 2.1 level大于等于INFO的日志  -->
+  <springProfile name="prod-group">
+    <appender name="INFO_FILE"
+      class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <!-- 正在记录的日志文档的路径及文档名 -->
+      <file>${LOG_FILE_PATH}/${APP_NAME}/info.log</file>
+      <!--日志文档输出格式-->
+      <encoder>
+        <Pattern>${LOG_PATTERN}</Pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+      <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 每天日志归档路径以及格式 -->
+        <fileNamePattern>
+          ${LOG_FILE_PATH}/${APP_NAME}/info-%d{yyyy-MM-dd}.%i.log
+        </fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy
+          class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+          <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <!--日志文档保留天数-->
+        <maxHistory>${MAX_SAVE_DAYS}</maxHistory>
+      </rollingPolicy>
+    </appender>
+  </springProfile>
+
+  <!-- 2.2 level等于ERROR的日志  -->
+  <springProfile name="prod-group">
+    <appender name="ERROR_FILE"
+      class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <!-- 正在记录的日志文档的路径及文档名 -->
+      <file>${LOG_FILE_PATH}/${APP_NAME}/error.log</file>
+      <!--日志文档输出格式-->
+      <encoder>
+        <Pattern>${LOG_PATTERN}</Pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+      <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_FILE_PATH}/${APP_NAME}/error-%d{yyyy-MM-dd}.%i.log
+        </fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy
+          class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+          <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <!--日志文档保留天数-->
+        <maxHistory>${MAX_SAVE_DAYS}</maxHistory>
+      </rollingPolicy>
+      <!-- 此日志文档只记录warn级别的 -->
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <level>error</level>
+        <onMatch>ACCEPT</onMatch>
+        <onMismatch>DENY</onMismatch>
+      </filter>
+    </appender>
+  </springProfile>
+
+  <!-- 默认日志输出源最低级别为INFO -->
+  <springProfile name="dev-group | qa-group | pre-group | prod-group">
+    <root level="DEBUG">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="prod-group">
+    <root level="DEBUG">
+      <appender-ref ref="INFO_FILE"/>
+      <appender-ref ref="ERROR_FILE"/>
+    </root>
+  </springProfile>
+
+</configuration>

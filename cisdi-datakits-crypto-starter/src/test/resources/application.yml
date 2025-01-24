@@ -1,0 +1,16 @@
+server:
+  servlet:
+    context-path: /test-crypto-starter
+spring:
+  application:
+    name: test-crypto-starter
+  messages:
+    basename: i18n/framework,i18n/crypto
+
+public:
+  redis:
+    business-keys:
+      cdcDorisTxSemaphoreKey: xxx
+      etlDorisTxSemaphoreKey: xxx
+      collieDorisTxSemaphoreKey: xxx
+      dorisAvailableKey: xxx

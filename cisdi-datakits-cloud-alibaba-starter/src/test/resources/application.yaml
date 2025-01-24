@@ -1,0 +1,68 @@
+public:
+  redis:
+    # [非必要不修改] 业务上用到的redis key管理
+    business-keys:
+      # etl能提交到doris的事物总数
+      etl-doris-tx-semaphore-key: datakits:resource:etl_doris_tx_semaphore
+      # cdc能提交到doris的事物总数
+      cdc-doris-tx-semaphore-key: datakits:resource:cdc_doris_tx_semaphore
+      # collie能提交到doris的事物总数
+      collie-doris-tx-semaphore-key: datakits:resource:collie_doris_tx_semaphore
+      # doris是否可用的标志
+      doris-available-key: datakits:resource:doris_available
+
+spring:
+  application:
+    name: test-cloud-application
+  profiles:
+    group:
+      dev-group: mysql,dev
+    active: dev-group
+  web:
+    locale: zh_CN
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      server-addr: xxxx:8848
+      discovery:
+        enabled: true
+        # 本地启动时，请改为自己的namespace，避免污染其他环境
+        namespace: test-atakits
+      config:
+        enabled: true
+        file-extension: yaml
+        namespace: datakits
+        group: datakits
+        extension-configs:
+          - data-id: public-datakits-var.yaml
+            group: datakits
+            refresh: true
+          - data-id: public-datakits-config.yaml
+            group: datakits
+            refresh: true
+  messages:
+    basename: i18n/framework
+    cache-duration: 10m
+    use-code-as-default-message: true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /
+
+datakits:
+  default-config:
+    element-count-service:
+      services:
+        - provider: 集成任务
+          url: http://服务名/接口
+          type: 数据源引用
+        - provider: 开发任务
+          url: http://服务名/接口
+          type: 数据源引用
+logging:
+  level:
+    root: info

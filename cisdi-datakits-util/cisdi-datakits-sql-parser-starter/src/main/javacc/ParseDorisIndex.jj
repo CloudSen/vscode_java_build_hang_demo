@@ -1,0 +1,259 @@
+
+
+options {
+    STATIC = false; //关闭生成java方法是静态的，默认是true
+    IGNORE_CASE = true;
+    UNICODE_INPUT = true;//接收unicode编码的输入，默认是false
+}
+
+// 固定格式
+PARSER_BEGIN(ParseDorisIndex)
+
+package cn.cisdigital.datakits.framework.util.sqlparser.javacc.ext.doris;
+
+import cn.cisdigital.datakits.framework.model.dto.database.IndexDto;
+import cn.cisdigital.datakits.framework.model.enums.DataBaseTypeEnum;
+import cn.cisdigital.datakits.framework.model.enums.IndexTypeStrategyFactory;
+import com.google.common.collect.Lists;
+import java.util.List;import java.util.Properties;
+
+
+public class ParseDorisIndex {
+    //可以再里面定义初始化信息，字符串接收方式，异常处理..
+}
+
+// 固定格式
+PARSER_END(ParseDorisIndex)
+
+
+//词法定义
+
+//SKIP是一种词法 要跳过忽略的字符串
+SKIP :
+{
+    " "
+|   "\t"
+|   "\n"
+|   "\r"
+|   "\f"
+}
+
+/**
+* 单引号
+*/
+TOKEN :
+{
+    < SINGLE_QUOTED_IDENTIFIER:
+    "'"
+    (
+        (~["'"])*
+    |
+        ("''")
+    )+
+    "'"
+    >
+}
+
+/**
+* 反引号
+*/
+TOKEN :
+{
+    < BACK_QUOTED_IDENTIFIER:
+    "`"
+    (
+        (~["`"])
+    |
+        ("``")
+    )+
+    "`"
+    >
+}
+
+/**
+* 双引号
+*/
+TOKEN :
+{
+    < QUOTED_IDENTIFIER:
+    "\""
+    (
+        (~["\""])
+    |
+        ("\"\"")
+    )+
+    "\""
+    >
+}
+
+//词法，代表要识别的字符串
+TOKEN : {
+
+ <INDEX : "INDEX">
+ | <USING : "USING">
+ | <COMMENT : "COMMENT">
+ | <PROPERTIES : "PROPERTIES">
+ | < LPAREN: "(">
+ | < RPAREN: ")">
+ | < EQ: "=">
+ | < COMMA: ",">
+}
+
+TOKEN : {
+  <NORMAL_NAME : (["a"-"z","A"-"Z","0"-"9","_"])+ >
+// 下面这种写法当列名没有包含`号时，会报错匹配不到COLUMN_NAME，因为匹配规则与INDEX_NAME重复了，匹配到的token就是INDEX_NAME
+// | <COLUMN_NAME : ("`")? ["a"-"z"](["a"-"z","0"-"9","_"])* ("`")?>
+}
+
+/**
+* 批量解析索引
+*/
+List<IndexDto> parseIndexs():
+{
+    List<IndexDto> indexList = Lists.newArrayList();
+}
+{
+    parseIndex(indexList)
+    (
+    <COMMA> parseIndex(indexList)
+    )*
+
+    {return indexList;}
+}
+
+/**
+* 解析索引
+*/
+private void parseIndex(List<IndexDto> indexList):
+{
+    List<String> columnList = Lists.newArrayList();
+    String indexName;
+    String indexType;
+    String desc = "";
+    Properties properties = null;
+}
+{
+    <INDEX>
+    indexName = parseIdentifier()
+
+    parseIndexColumn(columnList)
+
+    <USING>
+    indexType = parseIdentifier()
+
+    (<PROPERTIES>
+    properties = parseProperties())*
+
+    (<COMMENT>
+    desc = parseIdentifier())*
+
+   {
+ IndexDto indexDto = new IndexDto();
+ indexDto.setIndexComment(desc);
+ indexDto.setIndexName(indexName);
+ indexDto.setIndexType(IndexTypeStrategyFactory.getIndexType(DataBaseTypeEnum.DORIS, indexType));
+ indexDto.setColumnNameLists(columnList);
+ indexDto.setProperties(properties);
+ indexList.add(indexDto);
+}
+}
+
+/**
+* 解析字符串，如索引名称，列名称，描述等
+*/
+private String parseIdentifier():
+{
+ Token value;
+ String identifier;
+}
+{
+    (value = <NORMAL_NAME>
+    | value = <INDEX>
+    | value = <USING>
+    | value = <COMMENT>
+    | value = <QUOTED_IDENTIFIER> {value.image = subIdentifier(value.image,1,value.image.length() -1);}
+    | value = <SINGLE_QUOTED_IDENTIFIER> {value.image = subIdentifier(value.image,1,value.image.length() -1);}
+    | value = <BACK_QUOTED_IDENTIFIER> {value.image = subIdentifier(value.image,1,value.image.length() -1);}
+    )
+
+    {return value.image;}
+}
+
+/**
+* 截取字符串，如索引名称，列名称，描述等被双音号，单引号，反引号包括的情况
+*/
+private String subIdentifier(String identifier, int start, int end):
+{}
+{
+    {return identifier.substring(start,end);}
+}
+
+private void parseIndexColumn(List<String> columnList):
+{
+}
+{
+  <LPAREN>
+    addColumns(columnList)
+  <RPAREN>
+}
+
+private void addColumns(List<String> columnList):
+{
+    Token x;
+}
+{
+  addColumn(columnList)
+  (
+  <COMMA> addColumn(columnList)
+  )*
+}
+
+
+private void addColumn(List<String> columnList):
+{
+    String x;
+}
+{
+  x= parseIdentifier()
+  {
+     columnList.add(x);
+  }
+}
+
+/**
+* 解析properties
+*/
+private Properties parseProperties():
+{
+   Properties properties = new Properties();
+}
+{
+  <LPAREN>
+  addProperties(properties)
+  <RPAREN>
+  {return properties;}
+}
+
+private void addProperties(Properties properties):
+{
+}
+{
+  addProperty(properties)
+  (
+  <COMMA> addProperty(properties)
+  )*
+}
+
+
+private void addProperty(Properties properties):
+{
+    Token key;
+    Token value;
+}
+{
+  key = <QUOTED_IDENTIFIER>
+  <EQ> value = <QUOTED_IDENTIFIER>
+  {
+     properties.setProperty(subIdentifier(key.image,1,key.image.length() -1),subIdentifier(value.image,1,value.image.length() -1));
+  }
+}
